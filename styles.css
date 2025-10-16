@@ -31,8 +31,8 @@
 }
 
 html {
-  scroll-behavior: auto;
-  -webkit-overflow-scrolling: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -41,8 +41,8 @@ body {
   line-height: 1.6;
   color: var(--gray-700);
   background-color: var(--background);
-  scroll-behavior: auto;
-  -webkit-overflow-scrolling: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .container {
@@ -3515,11 +3515,11 @@ body {
 @media (max-width: 768px) {
   html,
   body {
-    /* 스크롤 관성 제거 */
-    -webkit-overflow-scrolling: auto;
-    overflow-scrolling: auto;
-    /* 스크롤 바운스 효과 제거 */
-    overscroll-behavior: none;
+    /* 자연스러운 스크롤 복원 */
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    /* 스크롤 바운스 효과 복원 */
+    overscroll-behavior: auto;
   }
 
   /* 모든 섹션에 GPU 가속 적용 */

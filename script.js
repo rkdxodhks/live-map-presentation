@@ -1,11 +1,11 @@
 // 라이브맵 발표자용 페이지 JavaScript
 
-// 즉시 스크롤 함수 (관성 제거)
+// 자연스러운 스크롤 함수
 function scrollToSection(sectionId) {
   const element = document.getElementById(sectionId);
   if (element) {
     element.scrollIntoView({
-      behavior: "auto",
+      behavior: "smooth",
       block: "start",
     });
   }
@@ -483,83 +483,23 @@ document.addEventListener("DOMContentLoaded", function () {
     statsObserver.observe(statsSection);
   }
 
-  // 즉시 스크롤 (모든 링크)
+  // 자연스러운 스크롤 (모든 링크)
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
       e.preventDefault();
       const target = document.querySelector(this.getAttribute("href"));
       if (target) {
         target.scrollIntoView({
-          behavior: "auto",
+          behavior: "smooth",
           block: "start",
         });
       }
     });
   });
 
-  // 키보드 네비게이션 (즉시 스크롤)
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "ArrowDown" || e.key === "PageDown") {
-      e.preventDefault();
-      window.scrollBy(0, window.innerHeight);
-    } else if (e.key === "ArrowUp" || e.key === "PageUp") {
-      e.preventDefault();
-      window.scrollBy(0, -window.innerHeight);
-    }
-  });
+  // 키보드 네비게이션 제거 - 자연스러운 스크롤로 복원
 
-  // 터치 제스처 (모바일) - 개선된 버전
-  let startY = 0;
-  let startX = 0;
-  let isScrolling = false;
-
-  document.addEventListener(
-    "touchstart",
-    function (e) {
-      startY = e.touches[0].clientY;
-      startX = e.touches[0].clientX;
-      isScrolling = false;
-    },
-    { passive: true }
-  );
-
-  document.addEventListener(
-    "touchmove",
-    function (e) {
-      if (!isScrolling) {
-        const currentY = e.touches[0].clientY;
-        const currentX = e.touches[0].clientX;
-        const diffY = Math.abs(currentY - startY);
-        const diffX = Math.abs(currentX - startX);
-
-        // 수직 스크롤인지 수평 스크롤인지 판단
-        isScrolling = diffY > diffX;
-      }
-    },
-    { passive: true }
-  );
-
-  document.addEventListener(
-    "touchend",
-    function (e) {
-      if (!isScrolling) return;
-
-      const endY = e.changedTouches[0].clientY;
-      const diff = startY - endY;
-
-      if (Math.abs(diff) > 80) {
-        // 최소 스와이프 거리 증가 (50px → 80px)
-        if (diff > 0) {
-          // 위로 스와이프 - 다음 섹션으로
-          window.scrollBy(0, window.innerHeight);
-        } else {
-          // 아래로 스와이프 - 이전 섹션으로
-          window.scrollBy(0, -window.innerHeight);
-        }
-      }
-    },
-    { passive: true }
-  );
+  // 터치 제스처 제거 - 자연스러운 스크롤로 복원
 
   // 크롤링 대시보드 시간 업데이트
   updateCrawlingDashboard();
