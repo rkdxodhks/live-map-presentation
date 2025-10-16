@@ -1,39 +1,19 @@
 // 라이브맵 발표자용 페이지 JavaScript
 
-// 스무스 스크롤 함수
+// 즉시 스크롤 함수 (관성 제거)
 function scrollToSection(sectionId) {
   const element = document.getElementById(sectionId);
   if (element) {
     element.scrollIntoView({
-      behavior: "smooth",
+      behavior: "auto",
       block: "start",
     });
   }
 }
 
-// 부드러운 스크롤 함수 (모바일 최적화)
+// 즉시 스크롤 함수 (관성 제거)
 function smoothScrollBy(x, y) {
-  const startY = window.pageYOffset;
-  const startX = window.pageXOffset;
-  const distance = Math.abs(y);
-  const duration = Math.min(800, distance * 0.5); // 거리에 비례한 시간
-  let start = null;
-
-  function step(timestamp) {
-    if (!start) start = timestamp;
-    const progress = Math.min((timestamp - start) / duration, 1);
-
-    // easeOutCubic 함수
-    const ease = 1 - Math.pow(1 - progress, 3);
-
-    window.scrollTo(startX + x * ease, startY + y * ease);
-
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    }
-  }
-
-  requestAnimationFrame(step);
+  window.scrollBy(x, y);
 }
 
 // AI 분석 시뮬레이터
@@ -503,28 +483,28 @@ document.addEventListener("DOMContentLoaded", function () {
     statsObserver.observe(statsSection);
   }
 
-  // 부드러운 스크롤 (모든 링크)
+  // 즉시 스크롤 (모든 링크)
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
       e.preventDefault();
       const target = document.querySelector(this.getAttribute("href"));
       if (target) {
         target.scrollIntoView({
-          behavior: "smooth",
+          behavior: "auto",
           block: "start",
         });
       }
     });
   });
 
-  // 키보드 네비게이션 (개선된 버전)
+  // 키보드 네비게이션 (즉시 스크롤)
   document.addEventListener("keydown", function (e) {
     if (e.key === "ArrowDown" || e.key === "PageDown") {
       e.preventDefault();
-      smoothScrollBy(0, window.innerHeight);
+      window.scrollBy(0, window.innerHeight);
     } else if (e.key === "ArrowUp" || e.key === "PageUp") {
       e.preventDefault();
-      smoothScrollBy(0, -window.innerHeight);
+      window.scrollBy(0, -window.innerHeight);
     }
   });
 
@@ -571,10 +551,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // 최소 스와이프 거리 증가 (50px → 80px)
         if (diff > 0) {
           // 위로 스와이프 - 다음 섹션으로
-          smoothScrollBy(0, window.innerHeight);
+          window.scrollBy(0, window.innerHeight);
         } else {
           // 아래로 스와이프 - 이전 섹션으로
-          smoothScrollBy(0, -window.innerHeight);
+          window.scrollBy(0, -window.innerHeight);
         }
       }
     },

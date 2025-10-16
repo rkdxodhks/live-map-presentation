@@ -31,8 +31,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  scroll-behavior: auto;
+  -webkit-overflow-scrolling: auto;
 }
 
 body {
@@ -41,11 +41,8 @@ body {
   line-height: 1.6;
   color: var(--gray-700);
   background-color: var(--background);
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  /* iOS Safari에서 스크롤 성능 개선 */
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  scroll-behavior: auto;
+  -webkit-overflow-scrolling: auto;
 }
 
 .container {
@@ -2838,14 +2835,16 @@ body {
   margin: 1.5rem 0;
 }
 
-.input-data, .output-insights {
+.input-data,
+.output-insights {
   background: var(--white);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: var(--shadow-md);
 }
 
-.input-data h6, .output-insights h6 {
+.input-data h6,
+.output-insights h6 {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--gray-800);
@@ -2947,14 +2946,16 @@ body {
   margin: 1.5rem 0;
 }
 
-.past-patterns, .ai-prediction {
+.past-patterns,
+.ai-prediction {
   background: var(--white);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: var(--shadow-md);
 }
 
-.past-patterns h6, .ai-prediction h6 {
+.past-patterns h6,
+.ai-prediction h6 {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--gray-800);
@@ -3326,7 +3327,8 @@ body {
   padding: 2rem;
 }
 
-.problem-section, .solution-section {
+.problem-section,
+.solution-section {
   background: var(--gray-100);
   border-radius: 12px;
   padding: 1.5rem;
@@ -3343,14 +3345,16 @@ body {
   border-left: 4px solid var(--success);
 }
 
-.problem-title, .solution-title {
+.problem-title,
+.solution-title {
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--gray-800);
   margin-bottom: 0.8rem;
 }
 
-.problem-desc, .solution-result {
+.problem-desc,
+.solution-result {
   color: var(--gray-700);
   line-height: 1.6;
   font-weight: 600;
@@ -3509,15 +3513,13 @@ body {
 
 /* 모바일 스크롤 최적화 */
 @media (max-width: 768px) {
-  html, body {
-    /* iOS Safari에서 스크롤 성능 최적화 */
-    -webkit-overflow-scrolling: touch;
-    overflow-scrolling: touch;
-    /* GPU 가속 활성화 */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    /* 스크롤 바운스 효과 */
-    overscroll-behavior: contain;
+  html,
+  body {
+    /* 스크롤 관성 제거 */
+    -webkit-overflow-scrolling: auto;
+    overflow-scrolling: auto;
+    /* 스크롤 바운스 효과 제거 */
+    overscroll-behavior: none;
   }
 
   /* 모든 섹션에 GPU 가속 적용 */
@@ -3906,7 +3908,8 @@ body {
     gap: 1rem;
   }
 
-  .input-data, .output-insights {
+  .input-data,
+  .output-insights {
     padding: 1rem;
   }
 
@@ -3927,7 +3930,8 @@ body {
     gap: 1rem;
   }
 
-  .past-patterns, .ai-prediction {
+  .past-patterns,
+  .ai-prediction {
     padding: 1rem;
   }
 
@@ -4039,7 +4043,8 @@ body {
     padding: 1rem;
   }
 
-  .problem-section, .solution-section {
+  .problem-section,
+  .solution-section {
     padding: 1rem;
   }
 
