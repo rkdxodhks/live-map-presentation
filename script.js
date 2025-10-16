@@ -11,6 +11,31 @@ function scrollToSection(sectionId) {
   }
 }
 
+// 부드러운 스크롤 함수 (모바일 최적화)
+function smoothScrollBy(x, y) {
+  const startY = window.pageYOffset;
+  const startX = window.pageXOffset;
+  const distance = Math.abs(y);
+  const duration = Math.min(800, distance * 0.5); // 거리에 비례한 시간
+  let start = null;
+
+  function step(timestamp) {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+
+    // easeOutCubic 함수
+    const ease = 1 - Math.pow(1 - progress, 3);
+
+    window.scrollTo(startX + x * ease, startY + y * ease);
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
 // AI 분석 시뮬레이터
 function analyzePosting(type) {
   const analysisResult = document.getElementById("analysis-result");
@@ -492,38 +517,69 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 키보드 네비게이션
+  // 키보드 네비게이션 (개선된 버전)
   document.addEventListener("keydown", function (e) {
     if (e.key === "ArrowDown" || e.key === "PageDown") {
       e.preventDefault();
-      window.scrollBy(0, window.innerHeight);
+      smoothScrollBy(0, window.innerHeight);
     } else if (e.key === "ArrowUp" || e.key === "PageUp") {
       e.preventDefault();
-      window.scrollBy(0, -window.innerHeight);
+      smoothScrollBy(0, -window.innerHeight);
     }
   });
 
-  // 터치 제스처 (모바일)
+  // 터치 제스처 (모바일) - 개선된 버전
   let startY = 0;
-  document.addEventListener("touchstart", function (e) {
-    startY = e.touches[0].clientY;
-  });
+  let startX = 0;
+  let isScrolling = false;
 
-  document.addEventListener("touchend", function (e) {
-    const endY = e.changedTouches[0].clientY;
-    const diff = startY - endY;
+  document.addEventListener(
+    "touchstart",
+    function (e) {
+      startY = e.touches[0].clientY;
+      startX = e.touches[0].clientX;
+      isScrolling = false;
+    },
+    { passive: true }
+  );
 
-    if (Math.abs(diff) > 50) {
-      // 최소 스와이프 거리
-      if (diff > 0) {
-        // 위로 스와이프 - 다음 섹션으로
-        window.scrollBy(0, window.innerHeight);
-      } else {
-        // 아래로 스와이프 - 이전 섹션으로
-        window.scrollBy(0, -window.innerHeight);
+  document.addEventListener(
+    "touchmove",
+    function (e) {
+      if (!isScrolling) {
+        const currentY = e.touches[0].clientY;
+        const currentX = e.touches[0].clientX;
+        const diffY = Math.abs(currentY - startY);
+        const diffX = Math.abs(currentX - startX);
+
+        // 수직 스크롤인지 수평 스크롤인지 판단
+        isScrolling = diffY > diffX;
       }
-    }
-  });
+    },
+    { passive: true }
+  );
+
+  document.addEventListener(
+    "touchend",
+    function (e) {
+      if (!isScrolling) return;
+
+      const endY = e.changedTouches[0].clientY;
+      const diff = startY - endY;
+
+      if (Math.abs(diff) > 80) {
+        // 최소 스와이프 거리 증가 (50px → 80px)
+        if (diff > 0) {
+          // 위로 스와이프 - 다음 섹션으로
+          smoothScrollBy(0, window.innerHeight);
+        } else {
+          // 아래로 스와이프 - 이전 섹션으로
+          smoothScrollBy(0, -window.innerHeight);
+        }
+      }
+    },
+    { passive: true }
+  );
 
   // 크롤링 대시보드 시간 업데이트
   updateCrawlingDashboard();
